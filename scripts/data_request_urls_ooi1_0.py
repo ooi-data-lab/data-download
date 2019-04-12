@@ -33,7 +33,7 @@ def build_data_request_urls(df):
     ap = '&include_annotations=true&include_provenance=true'
     url_list = []
     for i, j in df.iterrows():
-        if j['stream_type'] == 'Science':
+        if j['stream_type'] == 'Science' or j['stream_name'] == 'glider_eng_telemetered' or j['stream_name'] == 'glider_eng_recovered':
             refdes = j['reference_designator']
             rd = refdes.split('-')
             inst_req = '{:s}/{:s}/{:s}-{:s}/'.format(rd[0], rd[1], rd[2], rd[3])
