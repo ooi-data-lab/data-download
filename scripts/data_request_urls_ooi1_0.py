@@ -34,15 +34,16 @@ def build_data_request_urls(df):
     url_list = []
     for i, j in df.iterrows():
         if j['stream_type'] == 'Science' or j['stream_name'] == 'glider_eng_telemetered' or j['stream_name'] == 'glider_eng_recovered':
-            refdes = j['reference_designator']
-            rd = refdes.split('-')
-            inst_req = '{:s}/{:s}/{:s}-{:s}/'.format(rd[0], rd[1], rd[2], rd[3])
-            method = j['method']
-            stream = j['stream_name']
-            beginTime = j['begin']
-            endTime = j['end']
-            url = '{:s}/{:s}{:s}/{:s}?beginDT={:s}&endDT={:s}{:s}'.format(base_url, inst_req, method, stream, beginTime, endTime, ap)
-            url_list.append(url)
+            if '_dark_conc_' not in j['stream_name']:
+                refdes = j['reference_designator']
+                rd = refdes.split('-')
+                inst_req = '{:s}/{:s}/{:s}-{:s}/'.format(rd[0], rd[1], rd[2], rd[3])
+                method = j['method']
+                stream = j['stream_name']
+                beginTime = j['begin']
+                endTime = j['end']
+                url = '{:s}/{:s}{:s}/{:s}?beginDT={:s}&endDT={:s}{:s}'.format(base_url, inst_req, method, stream, beginTime, endTime, ap)
+                url_list.append(url)
     return url_list
 
 
@@ -64,6 +65,7 @@ def main(sDir, array, subsite, node, inst, delivery_methods, now=dt.datetime.now
             output[i]['end'] = data_request_tools.format_date(max(rlf_refdes['stopDateTime']))
             dd = list(rlf_refdes['deploymentNumber'])
             output[i]['deployments'] = [int(z) for z in dd]
+            #output[i]['deployments'] = dd
 
     output_df = pd.DataFrame.from_dict(output, orient='index')
 
