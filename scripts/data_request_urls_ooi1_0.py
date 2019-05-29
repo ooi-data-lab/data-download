@@ -35,15 +35,16 @@ def build_data_request_urls(df):
     for i, j in df.iterrows():
         if j['stream_type'] == 'Science' or j['stream_name'] == 'glider_eng_telemetered' or j['stream_name'] == 'glider_eng_recovered':
             if '_dark_conc_' not in j['stream_name']:
-                refdes = j['reference_designator']
-                rd = refdes.split('-')
-                inst_req = '{:s}/{:s}/{:s}-{:s}/'.format(rd[0], rd[1], rd[2], rd[3])
-                method = j['method']
-                stream = j['stream_name']
-                beginTime = j['begin']
-                endTime = j['end']
-                url = '{:s}/{:s}{:s}/{:s}?beginDT={:s}&endDT={:s}{:s}'.format(base_url, inst_req, method, stream, beginTime, endTime, ap)
-                url_list.append(url)
+                if '_blank' not in j['stream_name']:
+                    refdes = j['reference_designator']
+                    rd = refdes.split('-')
+                    inst_req = '{:s}/{:s}/{:s}-{:s}/'.format(rd[0], rd[1], rd[2], rd[3])
+                    method = j['method']
+                    stream = j['stream_name']
+                    beginTime = j['begin']
+                    endTime = j['end']
+                    url = '{:s}/{:s}{:s}/{:s}?beginDT={:s}&endDT={:s}{:s}'.format(base_url, inst_req, method, stream, beginTime, endTime, ap)
+                    url_list.append(url)
     return url_list
 
 
